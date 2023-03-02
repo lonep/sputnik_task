@@ -9,9 +9,16 @@ class DBmanager //Using for only SqLite
 public:
     DBmanager(const QString &dbName, const QString &hostName = "", const QString &userName = "", const QString &dbPassword = "");
 
-    void isertInTestTable(int hash, int data);
-    QSqlQuery sqlRequest(const QString &request);
+    QByteArray getByteArrayFromBlob(int hash);
+    QList<int> getListFromBlob(int hash);
+
+    void insertBlob(int input);
+    bool isTableContains(int number);
+
 private:
+    QSqlQuery sqlRequest(const QString &request);
+    bool findHash(int hash);
+
     QSqlDatabase db;
 
 };
