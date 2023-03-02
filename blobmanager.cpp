@@ -12,9 +12,10 @@ int BlobManager::getHash(int number)
 QList<int> BlobManager::toIntList(QByteArray blobByteArray)
 {
     QList <int> data_list;
+    int dataSize = 4; //4bytes
 
-    for (int i = 0; i < blobByteArray.size() / 4; ++i)
-        data_list.push_back(qFromBigEndian<int>(blobByteArray.mid(i * 4, i * 4 + 4)));
+    for (int i = 0; i < blobByteArray.size() / dataSize; ++i)
+        data_list.push_back(qFromBigEndian<int>(blobByteArray.mid(i * dataSize, i * dataSize + dataSize)));
 
     return data_list;
 }
