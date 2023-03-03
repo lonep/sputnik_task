@@ -9,8 +9,8 @@ class DBmanager //Using for only SqLite
 public:
     DBmanager(const QString &dbName, const QString &hostName = "", const QString &userName = "", const QString &dbPassword = "");
 
-    QByteArray getByteArrayFromBlob(int hash);
-    QList<int> getListFromBlob(int hash);
+    std::unique_ptr<QByteArray> getByteArrayFromBlob(int hash);
+    std::unique_ptr<QList<int>> getListFromBlob(int hash);
 
     void insertBlob(int input);
     bool isTableContains(int number);

@@ -27,8 +27,8 @@ int main(int argc, char *argv[])
 
     qDebug() << db.isTableContains(15); //test: Number with unique hash, res:TRUE
 
-    qDebug() << db.isTableContains(272371190); //test1: Number with not unique hash, res:TRUE
-    qDebug() << db.isTableContains(671164630); //test2: Number with not unique hash, res:TRUE
+    qDebug() << db.isTableContains(30946220); //test1: Number with not unique hash, res:TRUE
+    qDebug() << db.isTableContains(1761538851); //test2: Number with not unique hash, res:TRUE
 
     qDebug() << db.isTableContains(672985141); //test: Missing number, res:FALSE
 
