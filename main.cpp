@@ -11,10 +11,12 @@ void fillTestTable(DBmanager &db)
     std::mt19937 generator(seed);
     std::uniform_int_distribution<int> randomObject(0, INT_MAX);
 
-    for (int i = 0; i < 256; ++i)
-        db.insertBlob(randomObject(generator));
-    db.insertBlob(15);
+    QList<int> testData;
+    testData.resize(256);
 
+    for (auto &it: testData)
+        it = randomObject(generator);
+    db.insertBlob(testData);
 }
 
 
@@ -23,7 +25,7 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     DBmanager db("testDB.db");
-//    fillTestTable(db);
+    fillTestTable(db);
 
     qDebug() << db.isTableContains(15); //test: Number with unique hash, res:TRUE
 
