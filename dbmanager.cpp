@@ -20,6 +20,11 @@ DBmanager::DBmanager(const QString &dbName, const QString &hostName, const QStri
     db.open();
 }
 
+DBmanager::~DBmanager()
+{
+    db.close();
+}
+
 void DBmanager::insertBlob(int input)
 {
     int hash = BlobManager::getHash(input);
@@ -38,6 +43,38 @@ void DBmanager::insertBlob(int input)
         req.exec();
     }
 }
+
+void DBmanager::insertBlob(QList<int> &input)
+{
+    QSqlQuery insertReq;
+    QSqlQuery updateReq;
+
+    insertReq.prepare("INSERT INTO TEST VALUES (:hash, :data)");
+    updateReq.prepare("UPDATE test SET blob_data = :data WHERE hash=:hash");
+
+    std::function<void(int, QByteArray, QSqlQuery&)> bindAndExec = [](int hash, QByteArray blob, QSqlQuery &req)
+    {
+        req.bindValue(":hash", hash);
+        req.bindValue(":data", blob);
+        req.exec();
+    };
+
+    int hash = 0;
+
+    sqlRequest("BEGIN TRANSACTION");
+    for (auto it: input)
+    {
+        hash = BlobManager::getHash(it);
+
+        if (!findHash(hash))
+            bindAndExec(hash, BlobManager::prepareForBlobInput(it), insertReq);
+        else
+            bindAndExec(hash, BlobManager::prepareForBlobInput(it), updateReq);
+    }
+    sqlRequest("COMMIT");
+}
+
+
 
 bool DBmanager::isTableContains(int number)
 {
